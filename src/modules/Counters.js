@@ -1,4 +1,4 @@
-import getCardsFromLocalStorage from "../utl/funcs";
+import { getCardsFromLocalStorage } from "./localStorageController";
 
 function arrayLength(a) {
   let length = 0;

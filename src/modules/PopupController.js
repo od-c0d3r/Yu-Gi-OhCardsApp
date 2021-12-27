@@ -1,6 +1,6 @@
-import getCardsFromLocalStorage from '../utl/funcs.js';
 import commentsCounter from './Counters.js';
-import { getCommentsOf, postCommentWith } from './InvolveAPI.js';
+import { getCardsFromLocalStorage } from './localStorageController.js';
+import { getCommentsOf, postCommentWith } from './API/InvolveAPI.js';
 
 export function getCard(id) {
   const cards = getCardsFromLocalStorage();
@@ -94,4 +94,10 @@ document.addEventListener('submit', (e) => {
 
   e.target.reset();
   e.preventDefault();
+});
+
+document.addEventListener('click', (e) => {
+  const popup = document.getElementById('appPopup');
+  if (e.target === popup || e.target.id === 'close') popup.style.display = 'none';
+  if (e.target.id === 'commentBtn') displayPopup(e.target.getAttribute('data-id'));
 });

@@ -2,16 +2,13 @@
  * @jest-environment jsdom
  */
 
-import {
-  displayBlock, getCard, getDate, textContentWith,
-} from '../modules/PopupController.js';
-import getCardsFromLocalStorage from '../utl/__mocks__/funcs.js';
+import { getCardsFromLocalStorage } from '../modules/__mocks__/localStorageController.js';
+import { displayBlock, getCard, getDate, textContentWith } from '../modules/PopupController.js';
 
-jest.mock('../utl/funcs.js');
+jest.mock('../modules/localStorageController.js');
 
 describe('Unit Tests', () => {
   const element = document.createElement('div');
-
   describe('getCard()', () => {
     test('return card object bassed on id', () => {
       const cards = getCardsFromLocalStorage();

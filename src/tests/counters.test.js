@@ -2,20 +2,20 @@
  * @jest-environment jsdom
  */
 
- import commentsCounter from '../modules/Counters.js';
- import { arrayLength } from '../utl/__mocks__/funcs.js';
- import { fakeCards, fakeComments } from '../utl/mockData.js';
- 
- jest.mock('../utl/funcs.js');
+import commentsCounter from '../modules/Counters.js';
+import { fakeCards, fakeComments } from '../modules/__mocks__/mockData.js';
+import { arrayLength } from '../modules/__mocks__/localStorageController.js';
 
- describe('Unit Tests', () => {
-   describe('commentsCounter()', () => {
-     test('returns number of comments per card', () => {
-       expect(commentsCounter(fakeComments)).toEqual(2);
-     });
-   });
- });
- 
+jest.mock('../modules/localStorageController.js')
+
+describe('Unit Tests', () => {
+  describe('commentsCounter()', () => {
+    test('returns number of comments per card', () => {
+      expect(commentsCounter(fakeComments)).toEqual(2);
+    });
+  });
+});
+
 test('Check if arrayLength function is present', () => {
   expect(arrayLength).toBeDefined();
 });

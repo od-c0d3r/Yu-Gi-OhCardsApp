@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
-import { fakeCards } from '../mockData.js';
+import { fakeCards } from './mockData.js';
 
-export default function getCardsFromLocalStorage() {
+export function getCardsFromLocalStorage() {
   return fakeCards;
 }
 

@@ -1,5 +1,5 @@
-const API_URI = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi';
-const APP_ID = 'eVhYJo21vVPIv4GTCmdX';
+export const API_URI = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi';
+export const APP_ID = 'eVhYJo21vVPIv4GTCmdX';
 
 function getCommentsOptions() {
   return {
