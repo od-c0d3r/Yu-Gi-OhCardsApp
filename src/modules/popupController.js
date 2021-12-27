@@ -1,6 +1,6 @@
 import getCardsFromLocalStorage from '../utl/funcs.js';
 import commentsCounter from './commentsCounter.js';
-import { getCommentsOf, postCommentWith } from './interactionServer.js';
+import { getCommentsOf, postCommentWith } from './involveAPI.js';
 
 export function getCard(id) {
   const cards = getCardsFromLocalStorage();
