@@ -1,16 +1,18 @@
-import displayPopup from './popupController.js';
+import displayPopup from './PopupController.js';
+import getBlueEyesCards from './Yu-gi-ohAPI.js';
 
-export const cardsList = JSON.parse(localStorage.getItem('cardList')) || [];
+export const cardsList = JSON.parse(localStorage.getItem('cardsList')) || [];
 
 export const clearElement = ((element) => {
   element.innerHTML = '';
 });
 
-export const save = (() => {
-  localStorage.setItem('cardList', JSON.stringify(cardsList));
-});
+export const save = (list) => {
+  localStorage.setItem('cardsList', JSON.stringify(list));
+  return list
+};
 
-const displayElements = () => {
+export const displayElements = (cardsList) => {
   const cardsListNode = document.getElementById('card_list');
   clearElement(cardsListNode);
   for (let i = 0; i < cardsList.length; i++) {
@@ -29,21 +31,16 @@ const displayElements = () => {
   }
 };
 
-async function getCards() {
-  const response = await fetch('https://db.ygoprodeck.com/api/v7/cardinfo.php?archetype=Blue-Eyes');
-  const data = await response.json();
-  const cardsData = data.data;
-  cardsList.length = 0;
-  cardsList.push(...cardsData.slice(0, 12));
-  save();
-  displayElements();
+function displayBlueEyes() {
+  getBlueEyesCards().then( blueEyesData => {
+    displayElements(save(blueEyesData));
+  })
 }
 
 document.addEventListener('click', (e) => {
   const popup = document.getElementById('appPopup');
-
   if (e.target === popup || e.target.id === 'close') popup.style.display = 'none';
   if (e.target.id === 'commentBtn') displayPopup(e.target.getAttribute('data-id'));
 });
 
-getCards();
+displayBlueEyes();

@@ -1,4 +1,4 @@
-import { postLikeWith } from './involveAPI.js';
+import { postLikeWith } from './InvolveAPI.js';
 
 let clicked = false;
 const cardsListNode = document.getElementById('card_list');

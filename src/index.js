@@ -1,6 +1,6 @@
 import './styles/style.css';
 import './styles/popup.css';
-import './modules/homePage.js';
-import './modules/involveAPI.js';
-import './modules/likesController.js';
-import './modules/cardsCounter.js';
+import './modules/BlueEyesPage.js';
+import './modules/InvolveAPI.js';
+import './modules/LikesController.js';
+import './modules/Counters.js';

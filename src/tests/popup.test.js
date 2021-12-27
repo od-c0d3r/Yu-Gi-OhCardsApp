@@ -4,7 +4,7 @@
 
 import {
   displayBlock, getCard, getDate, textContentWith,
-} from '../modules/popup.js';
+} from '../modules/PopupController.js';
 import getCardsFromLocalStorage from '../utl/__mocks__/funcs.js';
 
 jest.mock('../utl/funcs.js');
