@@ -1,8 +1,7 @@
 import './styles/style.css';
 import './styles/popup.css';
-import './modules/UI.js';
-import './modules/API/InvolveAPI.js';
-import './modules/LikesController.js';
 import './modules/Counters.js';
-
-
+import './modules/API/InvolveAPI.js';
+import './modules/UiController.js';
+import './modules/LikesController.js';
+import './modules/PopupController.js'

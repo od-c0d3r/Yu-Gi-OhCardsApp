@@ -3,7 +3,7 @@
  */
 
 import { getCardsFromLocalStorage } from '../modules/__mocks__/localStorageController.js';
-import { displayBlock, getCard, getDate, textContentWith } from '../modules/PopupController.js';
+import { eleDisplayBlock, getCard, getDate, textContentWith } from '../modules/PopupController.js';
 
 jest.mock('../modules/localStorageController.js');
 
@@ -21,11 +21,11 @@ describe('Unit Tests', () => {
     });
   });
 
-  describe('displayBlock()', () => {
+  describe('eleDisplayBlock()', () => {
     test('changes an element\'s display rule to block', () => {
       element.style.display = 'none';
 
-      displayBlock(element);
+      eleDisplayBlock(element);
 
       expect(element.style.display).toBe('block');
     });

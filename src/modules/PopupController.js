@@ -7,7 +7,7 @@ export function getCard(id) {
   return cards.find((card) => card.id === id);
 }
 
-export function displayBlock(element) {
+export function eleDisplayBlock(element) {
   element.style.display = 'block';
   return true;
 }
@@ -26,35 +26,37 @@ export function getDate() {
   return today;
 }
 
-export default function displayPopup(cardId) {
+function createCardInfoNodes(cardId) {
   const card = getCard(Number(cardId));
-  const [popup, popupBody] = ['appPopup', 'popup-body'].map((id) => document.getElementById(id));
-  const [cardImg, cardTitle, cardDesc, cardType, cardATK, cardDEF, cardAttr, cardInfo, cardComments,
-    commentHead, commentsDisplay, addComment, addCommentHead, addCommentForm, inputUsername, inputComment, commentBtn] = ['img', 'h2', 'div', 'span', 'span', 'span', 'span', 'span', 'div', 'h4', 'div', 'div', 'h4', 'form', 'input', 'textarea', 'input'].map((tag) => document.createElement(tag));
-
+  const [cardImg, cardTitle, cardDesc, cardType, cardATK, cardDEF, cardAttr, cardInfo, cardComments, commentHead, commentsDisplay] =
+    ['img', 'h2', 'div', 'span', 'span', 'span', 'span', 'span', 'div', 'h4', 'div'].map((tag) => document.createElement(tag));
+  cardImg.src = card.card_images[0].image_url;
+  cardDesc.className = 'desc';
+  cardInfo.className = 'highlight';
   cardComments.id = 'cardComments';
   commentHead.id = 'commentHead';
   commentsDisplay.id = 'commentsDisplay';
-  cardDesc.className = 'desc';
-  cardInfo.className = 'highlight';
-  cardImg.src = card.card_images[0].image_url;
-
   textContentWith(cardTitle, `${card.name}`);
   textContentWith(cardType, `Type : ${card.type}`);
   textContentWith(cardATK, `Attack : ${(card.type === 'Spell Card') ? '-' : card.atk}`);
   textContentWith(cardAttr, `Attribute : ${(card.type === 'Spell Card') ? '-' : card.attribute}`);
   textContentWith(cardDEF, `Defence : ${(card.type === 'Spell Card') ? '-' : card.def}`);
   textContentWith(cardInfo, `Description : ${card.desc}`);
-  textContentWith(popupBody, '');
-
   getCommentsOf(cardId).then((commentsArr) => {
-    commentHead.textContent = commentsCounter(commentsArr) === undefined ? 'No comments' : `Comments (${commentsCounter(commentsArr)})`;
+    textContentWith(commentHead, commentsCounter(commentsArr) === undefined ? 'No comments' : `Comments (${commentsCounter(commentsArr)})`);
     commentsArr.forEach((comment) => {
       commentsDisplay.innerHTML
         += `<div>${comment.creation_date} (${comment.username}) : ${comment.comment}</div>`;
     });
   });
+  cardComments.append(commentHead, commentsDisplay);
+  cardDesc.append(cardType, cardATK, cardAttr, cardDEF);
+  return [cardImg, cardTitle, cardDesc, cardInfo, cardComments];
+}
 
+function createCommentFormNodes(id) {
+  const [addComment, addCommentHead, addCommentForm, inputUsername, inputComment, commentBtn] =
+    ['div', 'h4', 'form', 'input', 'textarea', 'input'].map((tag) => document.createElement(tag));
   addComment.id = 'addComment';
   inputUsername.id = 'inputUsername';
   addCommentForm.id = 'commentForm';
@@ -68,16 +70,19 @@ export default function displayPopup(cardId) {
   inputUsername.required = true;
   inputComment.required = true;
   commentBtn.value = 'Post';
-  addCommentForm.setAttribute('data-id', cardId);
-
+  addCommentForm.setAttribute('data-id', id);
   addCommentForm.append(inputUsername, inputComment, commentBtn);
   addComment.append(addCommentHead, addCommentForm);
-  cardComments.append(commentHead, commentsDisplay);
-  cardDesc.append(cardType, cardATK, cardAttr, cardDEF);
+  return addComment;
+}
+
+export default function displayPopup(cardId) {
+  const [popup, popupBody] = ['appPopup', 'popup-body'].map((id) => document.getElementById(id));
+  const [cardImg, cardTitle, cardDesc, cardInfo, cardComments ] = createCardInfoNodes(cardId);
+  const addComment = createCommentFormNodes(cardId);
+  textContentWith(popupBody, '');
   popupBody.append(cardImg, cardTitle, cardDesc, cardInfo, cardComments, addComment);
-
-  displayBlock(popup);
-
+  eleDisplayBlock(popup);
   return popup;
 }
 
@@ -86,12 +91,9 @@ document.addEventListener('submit', (e) => {
   const [username, comment] = [e.target[0].value, e.target[1].value];
   const id = Number(e.target.getAttribute('data-id'));
   const today = getDate();
-
   postCommentWith(id, username, comment);
-
   commentsDisplay.innerHTML += `<div>${today} (${username}) : ${comment}</div>`;
   commentHead.innerHTML = `Comments (${commentsDisplay.childElementCount})`;
-
   e.target.reset();
   e.preventDefault();
 });
