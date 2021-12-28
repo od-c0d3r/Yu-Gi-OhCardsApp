@@ -3,7 +3,8 @@
  */
 
 import { getCardsFromLocalStorage } from '../modules/__mocks__/localStorageController.js';
-import { eleDisplayBlock, getCard, getDate, textContentWith } from '../modules/PopupController.js';
+import { eleDisplayBlock, getCard, getDate } from '../modules/PopupController.js';
+import { textContentWith } from '../modules/UiController.js';
 
 jest.mock('../modules/localStorageController.js');
 

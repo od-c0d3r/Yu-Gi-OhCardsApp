@@ -1,6 +1,6 @@
-import commentsCounter from './Counters.js';
+import { postCommentWith } from './API/InvolveAPI.js';
 import { getCardsFromLocalStorage } from './localStorageController.js';
-import { getCommentsOf, postCommentWith } from './API/InvolveAPI.js';
+import { createCardInfoNodes, createCommentFormNodes, textContentWith } from './UiController.js';
 
 export function getCard(id) {
   const cards = getCardsFromLocalStorage();
@@ -12,11 +12,6 @@ export function eleDisplayBlock(element) {
   return true;
 }
 
-export function textContentWith(ele, value) {
-  ele.textContent = value;
-  return ele;
-}
-
 export function getDate() {
   let today = new Date();
   const dd = String(today.getDate()).padStart(2, '0');
@@ -24,56 +19,6 @@ export function getDate() {
   const yyyy = today.getFullYear();
   today = `${yyyy}-${mm}-${dd}`;
   return today;
-}
-
-function createCardInfoNodes(cardId) {
-  const card = getCard(Number(cardId));
-  const [cardImg, cardTitle, cardDesc, cardType, cardATK, cardDEF, cardAttr, cardInfo, cardComments, commentHead, commentsDisplay] =
-    ['img', 'h2', 'div', 'span', 'span', 'span', 'span', 'span', 'div', 'h4', 'div'].map((tag) => document.createElement(tag));
-  cardImg.src = card.card_images[0].image_url;
-  cardDesc.className = 'desc';
-  cardInfo.className = 'highlight';
-  cardComments.id = 'cardComments';
-  commentHead.id = 'commentHead';
-  commentsDisplay.id = 'commentsDisplay';
-  textContentWith(cardTitle, `${card.name}`);
-  textContentWith(cardType, `Type : ${card.type}`);
-  textContentWith(cardATK, `Attack : ${(card.type === 'Spell Card') ? '-' : card.atk}`);
-  textContentWith(cardAttr, `Attribute : ${(card.type === 'Spell Card') ? '-' : card.attribute}`);
-  textContentWith(cardDEF, `Defence : ${(card.type === 'Spell Card') ? '-' : card.def}`);
-  textContentWith(cardInfo, `Description : ${card.desc}`);
-  getCommentsOf(cardId).then((commentsArr) => {
-    textContentWith(commentHead, commentsCounter(commentsArr) === undefined ? 'No comments' : `Comments (${commentsCounter(commentsArr)})`);
-    commentsArr.forEach((comment) => {
-      commentsDisplay.innerHTML
-        += `<div>${comment.creation_date} (${comment.username}) : ${comment.comment}</div>`;
-    });
-  });
-  cardComments.append(commentHead, commentsDisplay);
-  cardDesc.append(cardType, cardATK, cardAttr, cardDEF);
-  return [cardImg, cardTitle, cardDesc, cardInfo, cardComments];
-}
-
-function createCommentFormNodes(id) {
-  const [addComment, addCommentHead, addCommentForm, inputUsername, inputComment, commentBtn] =
-    ['div', 'h4', 'form', 'input', 'textarea', 'input'].map((tag) => document.createElement(tag));
-  addComment.id = 'addComment';
-  inputUsername.id = 'inputUsername';
-  addCommentForm.id = 'commentForm';
-  inputComment.id = 'inputComment';
-  commentBtn.id = 'commentBtn';
-  inputUsername.type = 'text';
-  commentBtn.type = 'submit';
-  addCommentHead.textContent = 'Add a comment';
-  inputUsername.placeholder = 'Your name';
-  inputComment.placeholder = 'Your comment';
-  inputUsername.required = true;
-  inputComment.required = true;
-  commentBtn.value = 'Post';
-  addCommentForm.setAttribute('data-id', id);
-  addCommentForm.append(inputUsername, inputComment, commentBtn);
-  addComment.append(addCommentHead, addCommentForm);
-  return addComment;
 }
 
 export default function displayPopup(cardId) {
