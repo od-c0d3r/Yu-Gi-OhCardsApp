@@ -4,8 +4,9 @@ import { getCard } from './PopupController.js';
 import { getCommentsOf } from './API/InvolveAPI.js';
 import { setCardsToLocalStorage } from './localStorageController.js';
 
-function clearElement(element) {
+export function clearElement(element) {
   element.innerHTML = '';
+  return element;
 };
 
 export function textContentWith(ele, value) {

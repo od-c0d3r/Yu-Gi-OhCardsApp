@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 
-import { getCardsFromLocalStorage } from '../modules/__mocks__/localStorageController.js';
+import { clearElement, textContentWith } from '../modules/UiController.js';
 import { eleDisplayBlock, getCard, getDate } from '../modules/PopupController.js';
-import { textContentWith } from '../modules/UiController.js';
+import { getCardsFromLocalStorage } from '../modules/__mocks__/localStorageController.js';
 
 jest.mock('../modules/localStorageController.js');
 
@@ -52,6 +52,15 @@ describe('Unit Tests', () => {
       const result = `${yyyy}-${mm}-${dd}`;
 
       expect(getDate()).toBe(result);
+    });
+  });
+
+  describe('clearElement()', () => {
+    test('empty the element', () => {
+      element.textContent = 'This is not empty!' ;
+      let result = clearElement(element)
+
+      expect(result.innerHTML).toBe('');
     });
   });
 });
